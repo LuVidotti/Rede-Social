@@ -9,7 +9,9 @@ function Principal() {
         <div className="bg-light" style={{minHeight: "100vh"}}>
             <Header />
             <Container>
-                <Titulo titulo="Home"/>
+                <div style={{textAlign: "center"}}>
+                    <Titulo titulo="Home" />
+                </div>
                 <CriarPostagem />
                 <div className="mt-4">
                     <h4>Postagens:</h4>
