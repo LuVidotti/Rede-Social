@@ -6,6 +6,7 @@ const Usuario = mongoose.model('usuarios');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const SECRET = "segredojwt";
+const verificaToken = require('../auth');
 
 router.post("/", (req,res) => {
     let erros = [];
@@ -93,6 +94,22 @@ router.post('/login', (req,res) => {
             return res.status(500).json({errorMessage: "Houve um erro interno no servidor", erro:erro});
         })
     }
+})
+
+router.get('/perfil', verificaToken, (req,res) => {
+    const user = req.user;
+
+    Usuario.findOne({_id: user._id}).then((usuario) => {
+        const perfil = {
+            nome: usuario.nome,
+            email: usuario.email,
+            senha: usuario.senha
+        }
+
+        return res.status(200).json(perfil);
+    }).catch((erro) => {
+        return res.status(500).json({errorMessage: "Houve um erro interno no servidor", erro:erro});
+    })
 })
 
 module.exports = router;

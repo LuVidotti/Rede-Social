@@ -11,7 +11,16 @@ function verificaToken(req,res,next) {
         return res.status(404).json({message: "Erro, token nao fornecido"});
     }
 
-    
+    jwt.verify(token, SECRET, (err, decoded) => {
+        if(err) {
+            return res.status(403).json({message: "Erro, token invalido"});
+        };
+
+        Usuario.findOne({_id: decoded.userId}).then((usuario) => {
+            req.user = usuario;
+            next();
+        })
+    })
 }
 
 module.exports = verificaToken;
