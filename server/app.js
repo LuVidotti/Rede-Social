@@ -4,6 +4,7 @@ const PORT = 3000;
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rotaUsuarios = require('./routes/usuarios');
+const cors = require('cors');
 
 //config
     //mongoose
@@ -16,6 +17,9 @@ const rotaUsuarios = require('./routes/usuarios');
     //body-parser
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
+
+    //cors
+    app.use(cors());
 
 //rotas
 app.use('/usuarios', rotaUsuarios);

@@ -100,13 +100,7 @@ router.get('/perfil', verificaToken, (req,res) => {
     const user = req.user;
 
     Usuario.findOne({_id: user._id}).then((usuario) => {
-        const perfil = {
-            nome: usuario.nome,
-            email: usuario.email,
-            senha: usuario.senha
-        }
-
-        return res.status(200).json(perfil);
+        return res.status(200).json(usuario);
     }).catch((erro) => {
         return res.status(500).json({errorMessage: "Houve um erro interno no servidor", erro:erro});
     })
