@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rotaUsuarios = require('./routes/usuarios');
 const cors = require('cors');
+const rotaPostagens = require("./routes/postagens");
 
 //config
     //mongoose
@@ -23,6 +24,7 @@ const cors = require('cors');
 
 //rotas
 app.use('/usuarios', rotaUsuarios);
+app.use('/postagens', rotaPostagens);
 
 app.get('/', (req,res) => {
     res.send("ola mundo!!!");
