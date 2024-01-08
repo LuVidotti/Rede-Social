@@ -2,9 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Postagem = new Schema({
-    autor: {
+    autorId: {
         type: Schema.Types.ObjectId,
         ref: "usuarios"
+    },
+    autorNome: {
+        type: String,
+        required: true
     },
     conteudo: {
         type: String,

@@ -27,7 +27,8 @@ router.post('/', verificaToken, (req,res) => {
         res.status(400).json(erros);
     } else {
         const novaPostagem = {
-            autor: user._id,
+            autorId: user._id,
+            autorNome: user.nome,
             conteudo: req.body.conteudo
         }
 
