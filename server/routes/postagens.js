@@ -59,8 +59,12 @@ router.post('/', verificaToken, (req,res) => {
 })
 
 router.delete('/:idPostagem', verificaToken, (req,res) => {
-    Postagem.deleteOne({_id: req.params.idPostagem}).then(() => {
-        res.status(200).json({message: "Postagem deletada com sucesso!!!"});
+    Resposta.deleteMany({postagemId: req.params.idPostagem}).then(() => {
+        Postagem.deleteOne({_id: req.params.idPostagem}).then(() => {
+            res.status(200).json({message: "Postagem excluida com sucesso!!!"});
+        }).catch((erro) => {
+            res.status(500).json({errorMessage: "Erro interno no servidor", erro:erro});
+        })
     }).catch((erro) => {
         res.status(500).json({errorMessage: "Erro interno no servidor", erro:erro});
     })

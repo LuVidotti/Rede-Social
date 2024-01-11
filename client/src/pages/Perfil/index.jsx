@@ -6,10 +6,13 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import MensagemErro from "../../components/MensagemErro";
 import MinhaPostagem from "../../components/MinhaPostagem";
+import MensagemSucesso from "../../components/MensagemSucesso";
 
 function Perfil() {
     const [user, setUser] = useState({nome: "", email: ""});
     const [postagens, setPostagens] = useState([]);
+    const [mensagemErro, setMensagemErro] = useState('');
+    const [mensagemSucesso, setMensagemSucesso] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -40,6 +43,26 @@ function Perfil() {
         })
     }, [postagens]);
 
+    function deletarPostagem(idPostagem) {
+        const token = localStorage.getItem("token");
+
+        axios.delete(`http://localhost:3000/postagens/${idPostagem}`, {
+            headers: {
+                Authorization: token
+            }
+        }).then((resposta) => {
+            setMensagemSucesso(resposta.data.message);
+            setTimeout(() => {
+                setMensagemSucesso('');
+            }, 5000);
+        }).catch((erro) => {
+            setMensagemErro(erro.response.data.message);
+            setTimeout(() => {
+                setMensagemErro('');
+            }, 5000);
+        })
+    }
+
     return (
         <div>
             <Header />
@@ -60,9 +83,17 @@ function Perfil() {
                 <h4>Suas postagens:</h4>
 
                 {
+                    mensagemErro !== "" ? <MensagemErro texto={mensagemErro}/> : null
+                }
+
+                {
+                    mensagemSucesso !== "" ? <MensagemSucesso texto={mensagemSucesso}/> : null
+                }
+
+                {
                     postagens.length === 0 ? <MensagemErro texto="Nenhuma postagem cadastrada"/>
                     :
-                    postagens.map((postagem) => <MinhaPostagem key={postagem._id} data={postagem.data} autor={postagem.autorNome} conteudo={postagem.conteudo}/>)
+                    postagens.map((postagem) => <MinhaPostagem idPostagem={postagem._id} deletarPostagem={deletarPostagem} key={postagem._id} data={postagem.data} autor={postagem.autorNome} conteudo={postagem.conteudo}/>)
                 }
             </Container>
         </div>
