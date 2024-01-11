@@ -61,7 +61,7 @@ function Principal() {
                     {
                         postagens.length === 0 ? <small>Nenhuma postagem cadastrada</small>
                         :
-                        postagens.map((postagem) => <Postagem key={postagem._id} autor={postagem.autorNome} conteudo={postagem.conteudo} data={postagem.data}/>)
+                        postagens.map((postagem) => <Postagem idPostagem={postagem._id} key={postagem._id} autor={postagem.autorNome} conteudo={postagem.conteudo} data={postagem.data}/>)
                     }
                 </div>
             </Container>
