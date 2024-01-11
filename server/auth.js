@@ -19,6 +19,8 @@ function verificaToken(req,res,next) {
         Usuario.findOne({_id: decoded.userId}).then((usuario) => {
             req.user = usuario;
             next();
+        }).catch((erro) => {
+            res.status(500).json({ errorMessage: "Erro interno no servidor", erro: erro });
         })
     })
 }

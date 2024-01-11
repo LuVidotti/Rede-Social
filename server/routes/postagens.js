@@ -15,6 +15,16 @@ router.get('/', (req,res) => {
     })
 })
 
+router.get('/minhas-postagens', verificaToken, (req,res) => {
+    const user = req.user;
+
+    Postagem.find({autorId: user._id}).populate('autorId').then((postagens) => {
+        res.status(200).json(postagens);
+    }).catch((erro) => {
+        res.status(500).json({errorMessage: "Erro interno no servidor", erro:erro});
+    })
+})
+
 router.get('/:id', (req,res) => {
     Postagem.findOne({_id: req.params.id}).then((postagem) => {
         res.status(200).json(postagem);
