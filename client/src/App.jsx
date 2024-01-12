@@ -3,6 +3,7 @@ import Principal from "./pages/Principal";
 import Cadastrar from "./pages/Cadastrar";
 import Login from "./pages/Login";
 import Perfil from "./pages/Perfil";
+import AddAmigo from "./pages/AddAmigo";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/cadastrar" element={<Cadastrar />}/>
         <Route path="/login" element={<Login />}/>
         <Route path="/perfil" element={<Perfil />}/>
+        <Route path="/adicionar-amigo" element={<AddAmigo />}/>
       </Routes>
     </BrowserRouter>
   )

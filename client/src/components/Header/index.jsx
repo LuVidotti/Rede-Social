@@ -43,7 +43,7 @@ function Header() {
                         : 
                             <Nav className="me-auto">
                                 <Nav.Link href='/'>Home</Nav.Link>
-                                <Nav.Link href="/amigos">Adicionar amigo</Nav.Link>
+                                <Nav.Link href="/adicionar-amigo">Adicionar amigo</Nav.Link>
                                 <Nav.Link href="/perfil">Perfil</Nav.Link>
                                 <Nav.Link href="/" onClick={logout}>Sair</Nav.Link>
                             </Nav>

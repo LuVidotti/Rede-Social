@@ -4,7 +4,7 @@ import Titulo from "../../components/Titulo";
 import { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import MensagemErro from '../../components/mensagemErro';
+import MensagemErro from "../../components/MensagemErro";
 
 function Login() {
     const [email, setEmail] = useState('');
