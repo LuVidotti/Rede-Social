@@ -7,12 +7,14 @@ import { useNavigate } from "react-router-dom";
 import MensagemErro from "../../components/MensagemErro";
 import MinhaPostagem from "../../components/MinhaPostagem";
 import MensagemSucesso from "../../components/MensagemSucesso";
+import CardMeuAmigo from "../../components/CardMeuAmigo";
 
 function Perfil() {
     const [user, setUser] = useState({nome: "", email: ""});
     const [postagens, setPostagens] = useState([]);
     const [mensagemErro, setMensagemErro] = useState('');
     const [mensagemSucesso, setMensagemSucesso] = useState('');
+    const [amigos, setAmigos] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -43,6 +45,20 @@ function Perfil() {
         })
     }, [postagens]);
 
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        axios.get('http://localhost:3000/amigos', {
+            headers: {
+                Authorization: token
+            }
+        }).then((resposta) => {
+            setAmigos(resposta.data);
+        }).catch((erro) => {
+            console.log(erro);
+        })
+    }, [amigos]);
+
     function deletarPostagem(idPostagem) {
         const token = localStorage.getItem("token");
 
@@ -63,6 +79,23 @@ function Perfil() {
         })
     }
 
+    function excluirAmigo(idAmigo) {
+        const token = localStorage.getItem("token");
+
+        axios.delete(`http://localhost:3000/amigos/${idAmigo}`, {
+            headers: {
+                Authorization: token
+            }
+        }).then((resposta) => {
+            setMensagemSucesso(resposta.data.message);
+            setTimeout(() => {
+                setMensagemSucesso('');
+            }, 3000);
+        }).catch((erro) => {
+            console.log(erro);
+        })
+    }
+
     return (
         <div>
             <Header />
@@ -71,6 +104,14 @@ function Perfil() {
             </Container>
 
             <Container>
+                {
+                    mensagemErro !== "" ? <MensagemErro texto={mensagemErro}/> : null
+                }
+
+                {
+                    mensagemSucesso !== "" ? <MensagemSucesso texto={mensagemSucesso}/> : null
+                }
+
                 <div>
                     <h4>Nome: </h4>
                     <p>{user.nome}</p>
@@ -79,16 +120,16 @@ function Perfil() {
                     <h4>E-mail: </h4>
                     <p>{user.email}</p>
                 </div>
+
+                <h4>Seus amigos:</h4>
+
+                {
+                    amigos.length === 0 ? <h6>Voce nao tem nenhum amigo adicionado</h6>
+                    :
+                    amigos.map((amigo) => <CardMeuAmigo key={amigo._id} excluirAmigo={excluirAmigo} idAmigo={amigo.amigoId._id} nome={amigo.amigoId.nome}/>)
+                }
                 
-                <h4>Suas postagens:</h4>
-
-                {
-                    mensagemErro !== "" ? <MensagemErro texto={mensagemErro}/> : null
-                }
-
-                {
-                    mensagemSucesso !== "" ? <MensagemSucesso texto={mensagemSucesso}/> : null
-                }
+                <h4 style={{marginTop: "2em"}}>Suas postagens:</h4>
 
                 {
                     postagens.length === 0 ? <MensagemErro texto="Nenhuma postagem cadastrada"/>
